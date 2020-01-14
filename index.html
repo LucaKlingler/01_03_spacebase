@@ -25,19 +25,27 @@
 <body>
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
-  </pre>
-
+	</pre>
+	
+	<!--<script src="invader_class.js"></script>-->
+	 
 	<script>
 		let renderStr = "";
 		let rows = 50;
 		let cols = 140;
+		let xpos = Math.floor(Math.random() * (cols / 2));
+		let ypos = 5;
 		let cnt = 0;
 		let spaceshipPos = Math.round(cols / 2);
 		let currentBullets = [];
+		let currentInvaderBullets = [];
 		let invaders = [];
 		let obstacles = [];
 		let run = 0;
 		let xoffset = 0;
+		let yoffset = 0;
+		let invadersPos = 0;
+		let right = true;
 
 		/*
 		 *	SPIELELOGIK
@@ -58,6 +66,8 @@
 				char: "*"
 			})
 		}
+
+		
 
 		function fireBullet() {
 			currentBullets.push({
@@ -198,6 +208,32 @@
 			}*/
 
 			//printInvader(invaders[0],100,100);
+			// Invader läuft von Seite zu Seite und geht nach untena
+			run++;
+			if (run >= 2) {
+				run = 0; //	xoffset += 2;
+				if (right) {
+					xoffset += 2;
+				} else {
+					xoffset -= 2;
+				}
+			}
+			invadersPos = xpos + xoffset;
+			let border = cols - invaders[0].length - 2;
+			if (invadersPos >= border) {
+				right = false;
+				yoffset++;
+			} else if (invadersPos == 0) {
+				right = true;
+				yoffset++;
+			}
+			invaderFireBullet(invadersPos);
+			printInvader(invaders[0], xpos + xoffset, ypos + yoffset);
+			/*printInvader(invaders[0], 30 + xoffset, 1);
+			printInvader(invaders[0], 50 + xoffset, 1);
+			printInvader(invaders[0], 70 + xoffset, 1);
+			printInvader(invaders[0], 90 + xoffset, 1);
+			printInvader(invaders[0], 110 + xoffset, 1);*/
 
 		}
 
@@ -214,6 +250,24 @@
 			}
 		}
 
+		function renderInvaderBullets() {
+			//TODO: Prüfen ob eine Kugel einen Invader oder ein Obstacle trifft, wenn ja Aktion auslösen
+
+			//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
+			currentInvaderBullets = currentInvaderBullets.filter(invaderBullet => invaderBullet.y > 50);
+			//Kugeln einen Schritt weiter bewegen, dann rendern
+			currentInvaderBullets.forEach((invaderBullet) => {
+				invaderBullet.y -= 1;
+				renderStr = setCharsAt(renderStr, xyToStringPos(invaderBullet.x, invaderBullet.y), "|");
+			})
+		}
+
+		function invaderFireBullet() {
+			currentInvaderBullets.push({
+				x: invadersPos,
+				y: rows
+			});
+		}
 
 
 		//Hauptrenderfunktion
@@ -228,23 +282,14 @@
 			renderSpaceship(spaceshipPos, rows - 3, renderStr);
 
 			//Render Invaders
-			//renderInvaders(123456, 0, renderStr);
-			run++;
-			if (run >= 20) {
-				run = 0;
-				xoffset += 2;
-			}
-			printInvader(invaders[0], 10 + xoffset, 1);
-			printInvader(invaders[0], 30 + xoffset, 1);
-			printInvader(invaders[0], 50 + xoffset, 1);
-			printInvader(invaders[0], 70 + xoffset, 1);
-			printInvader(invaders[0], 90 + xoffset, 1);
-			printInvader(invaders[0], 110 + xoffset, 1);
-			
+			renderInvaders(123456, 0, renderStr);
+
+
 			//Render Bullets
 			renderBullets(renderStr);
-
+			renderInvaderBullets(renderStr);
 			
+			renderInvaderBullets(renderStr);
 			//Gesamtergebnis anzeigen
 			document.getElementById("console").innerText = renderStr;
 		}
