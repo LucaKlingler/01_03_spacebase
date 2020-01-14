@@ -1,0 +1,10 @@
+TODO Invader:
+x bewegen 
+  x von Seite zu Seite 
+  x immer eins Tiefer 
+  - untere Border festlegen
+- schießen + explodieren
+  - nicht alle gleichzeitig schießen
+  - nur schießen wenn unter Invader platz (nicht gegenseitig abschießen)
+  - Hindernise langsam kaputt schießen
+  - wenn getroffen explodieren

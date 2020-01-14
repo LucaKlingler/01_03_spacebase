@@ -25,10 +25,9 @@
 <body>
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
-	</pre>
-	
-	<!--<script src="invader_class.js"></script>-->
-	 
+  </pre>
+
+	<script src="invader_class.js"></script>
 	<script>
 		let renderStr = "";
 		let rows = 50;
@@ -55,8 +54,7 @@
 			//TODO Punktestände
 
 			//TODO Invaders erzeugen und in Array (invaders) schreiben damit sie gerendet werden können
-			invaders.push(generateInvader());
-
+			invaders.push(new Invader(5, 5, 10, 10, Invader.generateInvader(5, 5), 1));
 			//Obstacles erzeugen
 			obstacles.push({
 				x: Math.round(cols / 2) - 5,
@@ -66,8 +64,6 @@
 				char: "*"
 			})
 		}
-
-		
 
 		function fireBullet() {
 			currentBullets.push({
@@ -97,6 +93,7 @@
 			// console.log(invader)
 			return invader;
 		}
+
 
 
 		/*
@@ -158,7 +155,6 @@
 				"╔▒▒▒▒▒╗",
 				"╚▒▒▒▒▒╝"
 			]
-
 			for (var i = 0; i < spaceship.length; i++) {
 				//Zeilenweise in String schreiben
 				renderStr = setCharsAt(renderStr, xyToStringPos(posX, posY + i), spaceship[i]);
@@ -189,26 +185,6 @@
 
 		function renderInvaders(invader, pos) {
 			//TODO Invaders rendern
-
-			//const space = generateInvader(7, 8, 5, 5);
-
-			/*let xpos = 10;
-			let ypos = 10;
-
-			for (let x = 0; x < 10 *space.length* ; x++) {
-				for (let y = 0; y < 5 *space[0].length* ; y++) {
-					if (Math.random() > 0.5) {
-						renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), '■');
-						renderStr = setCharsAt(renderStr, xyToStringPos(10 * 2 - x + xpos, y + ypos), '■');
-						//writeCharacterToConsole((chalk.hsv(hue, 100, 100)('■')), space.length * 2 - x + xpos, y + ypos);
-						*setCharsAt(renderStr, xyToStringPos(space.length * 2 - x + xpos, y + ypos), '■');*
-					}
-
-				}
-			}*/
-
-			//printInvader(invaders[0],100,100);
-			// Invader läuft von Seite zu Seite und geht nach untena
 			run++;
 			if (run >= 2) {
 				run = 0; //	xoffset += 2;
@@ -217,57 +193,37 @@
 				} else {
 					xoffset -= 2;
 				}
-			}
-			invadersPos = xpos + xoffset;
-			let border = cols - invaders[0].length - 2;
-			if (invadersPos >= border) {
-				right = false;
-				yoffset++;
-			} else if (invadersPos == 0) {
-				right = true;
-				yoffset++;
-			}
-			invaderFireBullet(invadersPos);
-			printInvader(invaders[0], xpos + xoffset, ypos + yoffset);
-			/*printInvader(invaders[0], 30 + xoffset, 1);
-			printInvader(invaders[0], 50 + xoffset, 1);
-			printInvader(invaders[0], 70 + xoffset, 1);
-			printInvader(invaders[0], 90 + xoffset, 1);
-			printInvader(invaders[0], 110 + xoffset, 1);*/
 
+				for (let i = 0; i < invaders.length; i++) {
+					invader = invaders[i];
+					let limit = cols - invader.appearance.length * 2;
+					if (invader.posX + xoffset >= limit) {
+						right = false;
+						yoffset++;
+					} else if (invader.posX + xoffset <= 0) {
+						right = true;
+						yoffset++;
+					}
+				}
+			}
+			for (let i = 0; i < invaders.length; i++) {
+				printInvader(invaders[i]);
+			}
 		}
 
-		function printInvader(invader, xpos, ypos) {
-			for (let x = 0; x < invader[0].length; x++) {
-				for (let y = 0; y < invader.length; y++) {
-					if (invader[x][y] == 1) {
+		function printInvader(invader) {
+			for (let x = 0; x < invader.appearance[0].length; x++) {
+				for (let y = 0; y < invader.appearance.length; y++) {
+					if (invader.appearance[x][y] == 1) {
 
-						renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), '█');
-						renderStr = setCharsAt(renderStr, xyToStringPos(invader.length - x + xpos, y + ypos), '█');
+						renderStr = setCharsAt(renderStr, xyToStringPos(x + invader.posX + xoffset, y + invader.posY + yoffset), '█');
+						renderStr = setCharsAt(renderStr, xyToStringPos(invader.appearance.length - x + invader.posX + xoffset, y + invader.posY + yoffset), '█');
 						//renderStr = setCharsAt(renderStr,xyToStringPos (x+ xpos,y+ypos), "ABC")
 					}
 				}
 			}
 		}
 
-		function renderInvaderBullets() {
-			//TODO: Prüfen ob eine Kugel einen Invader oder ein Obstacle trifft, wenn ja Aktion auslösen
-
-			//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
-			currentInvaderBullets = currentInvaderBullets.filter(invaderBullet => invaderBullet.y > 50);
-			//Kugeln einen Schritt weiter bewegen, dann rendern
-			currentInvaderBullets.forEach((invaderBullet) => {
-				invaderBullet.y -= 1;
-				renderStr = setCharsAt(renderStr, xyToStringPos(invaderBullet.x, invaderBullet.y), "|");
-			})
-		}
-
-		function invaderFireBullet() {
-			currentInvaderBullets.push({
-				x: invadersPos,
-				y: rows
-			});
-		}
 
 
 		//Hauptrenderfunktion
@@ -284,12 +240,9 @@
 			//Render Invaders
 			renderInvaders(123456, 0, renderStr);
 
-
 			//Render Bullets
 			renderBullets(renderStr);
-			renderInvaderBullets(renderStr);
-			
-			renderInvaderBullets(renderStr);
+
 			//Gesamtergebnis anzeigen
 			document.getElementById("console").innerText = renderStr;
 		}
