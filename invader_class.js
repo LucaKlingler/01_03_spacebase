@@ -1,21 +1,31 @@
 class Invader {
-  constructor(width, height, posX, posY, appearance, id) {
+  constructor(width, height, posX, posY, id, rand = Math.random()) {
     this.width = width;
     this.height = height;
     this.posX = posX;
     this.posY = posY;
-    this.appearance = appearance;
+    this.rand = rand;
+    this.appearance = this.generateInvader();
     this.id = id;
+    this.explodeState = 0;
   }
 
   shootLaser() {
     // eslint-disable-next-line no-console
-    console.log("Invader "+this.id+ "Laser shot");
+    console.log("Invader " + this.id + "Laser shot");
   }
 
   explode() {
     // eslint-disable-next-line no-console
-    console.log("Invader "+this.id+" exploded");
+    console.log("Invader " + this.id + " exploded");
+    this.appearance = [
+      [0, 0, 0, 0, 0],
+      [0, 0, 2, 0, 0],
+      [0, 2, 0, 2, 0],
+      [0, 2, 0, 2, 0],
+      [2, 0, 0, 0, 2]
+    ];
+    this.explodeState = 1;
   }
 
   /*
@@ -24,11 +34,11 @@ class Invader {
   }
   */
 
-  static generateInvader(width, height, rand = Math.random()) {
+  generateInvader() {
     const invader = [];
-    for (let x = 0; x < width; x += 1) {
-      for (let y = 0; y < height; y += 1) {
-        const randProcessed = rand.toString()[x * y];
+    for (let x = 0; x < this.width; x += 1) {
+      for (let y = 0; y < this.height; y += 1) {
+        const randProcessed = this.rand.toString()[x * y];
         if (parseInt(randProcessed, 10) > 3) {
           if (!Array.isArray(invader[x])) {
             invader[x] = [];
