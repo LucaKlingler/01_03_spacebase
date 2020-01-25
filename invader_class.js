@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 class Invader {
   constructor(width, height, posX, posY, id, rand = Math.random()) {
     this.width = width;
@@ -12,20 +13,22 @@ class Invader {
 
   shootLaser() {
     // eslint-disable-next-line no-console
-    console.log("Invader " + this.id + "Laser shot");
+    console.log(`Invader ${this.id}Laser shot`);
   }
 
   explode() {
     // eslint-disable-next-line no-console
-    console.log("Invader " + this.id + " exploded");
-    this.appearance = [
-      [0, 0, 0, 0, 0],
-      [0, 0, 2, 0, 0],
-      [0, 2, 0, 2, 0],
-      [0, 2, 0, 2, 0],
-      [2, 0, 0, 0, 2]
-    ];
-    this.explodeState = 1;
+    console.log(`Invader ${this.id} exploded`);
+    if (this.explodeState < 1) {
+      this.appearance = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 2, 0, 0],
+        [0, 2, 0, 2, 0],
+        [0, 2, 0, 2, 0],
+        [2, 0, 0, 0, 2],
+      ];
+      this.explodeState = 1;
+    }
   }
 
   /*

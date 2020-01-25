@@ -1,0 +1,25 @@
+{
+  "name": "01_03_spacebase",
+  "version": "1.0.0",
+  "description": "Base for Space Invaders",
+  "main": "-",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucaKlingler/01_03_spacebase.git"
+  },
+  "author": "Luca Klingler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucaKlingler/01_03_spacebase/issues"
+  },
+  "homepage": "https://github.com/LucaKlingler/01_03_spacebase#readme"
+}
