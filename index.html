@@ -5,6 +5,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>SPACE INVADERS</title>
+	<link rel="stylesheet" href="restart.css">
+	<link rel="stylesheet" href="pause.css">
+	<link rel="stylesheet" href="scoreboard.css">
 	<style>
 		pre {
 			position: absolute;
@@ -23,6 +26,9 @@
 </head>
 
 <body>
+	<button class="newgame" onclick="location.reload()">Restart</button>
+	<button class="pause" onclick="pause = !pause">Pause</button>
+	<p class="scoreboard">SCOREBOARD<br></p>
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
 	</pre>
@@ -48,6 +54,13 @@
 		let bulletId = 0;
 		let right = true;
 		let pause = false;
+		let endOfGame = 0;
+		let speed = 25;
+		let spaceship = ["   #   ",
+			"#######",
+			"#######"
+		]
+		let invaderShotCount = 0;
 		/*
 		 *	SPIELELOGIK
 		 */
@@ -135,10 +148,10 @@
 
 		function renderSpaceship(posX, posY) {
 			//Spaceship-Array
-			let spaceship = ["   #   ",
+			/*let spaceship = ["   #   ",
 				"#######",
 				"#######"
-			]
+			]*/
 
 			for (var i = 0; i < spaceship.length; i++) {
 				//Zeilenweise in String schreiben
@@ -178,6 +191,7 @@
 							inv.explode();
 							if (inv.explodeState <= 1) {
 								bullet.posY = 0;
+								invaderShotCount += 1;
 							}
 						}
 					}
@@ -203,18 +217,28 @@
 						const laser = invaderRows[r].invaders[i].lasers[l];
 
 
-						const dist = Math.sqrt(Math.pow((spaceshipPos - laser.posX), 2) + Math.pow((50 - laser
-							.posY), 2));
+						const dist = Math.sqrt(Math.pow((laser.posX + xoffset - (spaceshipPos + 3)), 2) + Math.pow((laser
+							.posY + yoffset - (rows - 2)), 2));
 
 						if (dist < 3) {
-							console.log("test");
+							if (endOfGame < 1) {
+								endOfGame += 1;
+								speed = 5;
+								spaceship = [];
+							}
 						}
+						renderStr = setCharsAt(renderStr, xyToStringPos(spaceshipPos + 3, rows - 2, cols), "X")
 
-						laser.posY += 1;
-						console.log(true);
 
-						renderStr = setCharsAt(renderStr, xyToStringPos(laser.posX + xoffset, laser.posY + yoffset,
-							cols), "|");
+						invaderRows[r].invaders[i].lasers = invaderRows[r].invaders[i].lasers.filter(laser => laser.posY + yoffset <
+							rows);
+						//Kugeln einen Schritt weiter bewegen, dann rendern
+						invaderRows[r].invaders[i].lasers.forEach((laser) => {
+							laser.posY += 1;
+							renderStr = setCharsAt(renderStr, xyToStringPos(laser.posX + xoffset, laser.posY +
+								yoffset,
+								cols), "|");
+						})
 					}
 				}
 			}
@@ -224,13 +248,17 @@
 			//TODO Invaders rendern
 			run++;
 			// if (run >= 15) {
-			if (run >= 25) {
+			if (run >= speed) {
 				run = 0;
 				run2 += 1;
-				if (right) {
-					xoffset += xoffsetSteps;
+				if (endOfGame < 1) {
+					if (right) {
+						xoffset += xoffsetSteps;
+					} else {
+						xoffset -= xoffsetSteps;
+					}
 				} else {
-					xoffset -= xoffsetSteps;
+					endOfGame++;
 				}
 
 				/*
@@ -291,14 +319,20 @@
 			if (run2 == 2) {
 				run2 = 0;
 				randRow = Math.floor(Math.random() * invaderRows.length);
- 				console.log(randRow);
- 				randInv = Math.floor(Math.random() * invaderRows[randRow].invaderCount);
- 				console.log(randInv);
- 				if (invaderRows[randRow].invaders[randInv].explodeState < 1) {
- 					invaderRows[randRow].invaders[randInv].shootLaser();
- 				}
- 			}
-			
+				console.log(randRow);
+				randInv = Math.floor(Math.random() * invaderRows[randRow].invaderCount);
+				console.log(randInv);
+				if (invaderRows[randRow].invaders[randInv].explodeState < 1) {
+					if (endOfGame < 1) {
+						invaderRows[randRow].invaders[randInv].shootLaser();
+					} else {
+						if (endOfGame > 10) {
+							invaderRows[randRow].invaders[randInv].explode();
+						}
+					}
+				}
+			}
+
 
 			for (let i = 0; i < invaderRows.length; i++) {
 				printInvaderRow(invaderRows[i]);
@@ -312,8 +346,10 @@
 				//Render Background
 				renderStr = renderBackground(rows, cols);
 
-				//Render Obstacle
-				renderObstacles();
+				if (endOfGame < 5) {
+					//Render Obstacle
+					renderObstacles();
+				}
 
 				//Render Spaceship
 				renderSpaceship(spaceshipPos, rows - 3, renderStr);
@@ -323,7 +359,7 @@
 
 				//Render Bullets
 				renderBullets(renderStr);
-				
+
 				//Render Laser
 				renderLasers(renderStr);
 
