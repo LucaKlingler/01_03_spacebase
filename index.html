@@ -28,7 +28,7 @@
 <body>
 	<button class="newgame" onclick="location.reload()">Restart</button>
 	<button class="pause" onclick="pause = !pause">Pause</button>
-	<p class="scoreboard">SCOREBOARD<br></p>
+	<p class="scoreboard" id="SCOREBOARD">SCOREBOARD<br></p>
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
 	</pre>
@@ -147,11 +147,6 @@
 		}
 
 		function renderSpaceship(posX, posY) {
-			//Spaceship-Array
-			/*let spaceship = ["   #   ",
-				"#######",
-				"#######"
-			]*/
 
 			for (var i = 0; i < spaceship.length; i++) {
 				//Zeilenweise in String schreiben
@@ -247,7 +242,6 @@
 		function renderInvaders() {
 			//TODO Invaders rendern
 			run++;
-			// if (run >= 15) {
 			if (run >= speed) {
 				run = 0;
 				run2 += 1;
@@ -261,38 +255,17 @@
 					endOfGame++;
 				}
 
-				/*
 				for (let r = 0; r < invaderRows.length; r++) {
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
 						const invader = invaderRows[r].invaders[i];
 
 						if (invader.explodeState > 0) {
 							invader.explodeState += 1;
-							if (right) {
-								xoffset -= xoffsetSteps;
-							} else {
-								xoffset += xoffsetSteps;
-							}
-						}
-						*/
-
-				for (let r = 0; r < invaderRows.length; r++) {
-					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-						const invader = invaderRows[r].invaders[i];
-
-						if (invader.explodeState > 0) {
-							invader.explodeState += 1;
-							/*if (right) {
-								xoffset -= xoffsetSteps;
-							} else {
-								xoffset += xoffsetSteps;
-							}*/
 						}
 					}
 				}
 
 				const invader = invaderRows[0].invaders[0];
-				// let xLimit = cols - invader.appearance.length * 2;
 				let xLimit = cols - invaderRows[0].rowWidth;
 				let yLimit = rows - invader.appearance[0].length - 10;
 				if (invader.posY + yoffset <= yLimit) {
@@ -308,14 +281,8 @@
 					yoffset = 0;
 					pause = true;
 				}
-				/*}
-				}*/
 			}
-			/*
-			for (let i = 0; i < invaders.length; i++) {
-				printInvader(invaders[i]);
-			}
-			*/
+			
 			if (run2 == 2) {
 				run2 = 0;
 				randRow = Math.floor(Math.random() * invaderRows.length);
@@ -365,34 +332,10 @@
 
 				//Gesamtergebnis anzeigen
 				document.getElementById("console").innerText = renderStr;
+				document.getElementById("SCOREBOARD").innerText = "Scoreboard \n" + invaderShotCount;
 
 			}
 		}
-
-		function printInvader(invader) {
-			for (let x = 0; x < invader.appearance.length; x++) {
-				for (let y = 0; y < invader.appearance[0].length; y++) {
-					if (invader.explodeState < 5) {
-						if (invader.appearance[x][y] == 1) {
-							renderStr = setCharsAt(renderStr, xyToStringPos(x + invader.posX + xoffset, y + invader.posY +
-								yoffset, cols), "█");
-							renderStr = setCharsAt(renderStr, xyToStringPos(invader.appearance.length * 2 - x - 1 +
-								invader
-								.posX +
-								xoffset, y + invader.posY + yoffset, cols), "█")
-						} else if (invader.appearance[x][y] == 2) {
-							renderStr = setCharsAt(renderStr, xyToStringPos(x + invader.posX + xoffset, y + invader.posY +
-								yoffset, cols), "*");
-							renderStr = setCharsAt(renderStr, xyToStringPos(invader.appearance.length * 2 - x - 1 +
-								invader
-								.posX +
-								xoffset, y + invader.posY + yoffset, cols), "*")
-						}
-					}
-				}
-			}
-		}
-
 		function printInvaderRow(invaderRow) {
 			for (let i = 0; i < invaderRow.invaders.length; i++) {
 				for (let x = 0; x < invaderRow.invaders[i].appearance.length; x++) {
