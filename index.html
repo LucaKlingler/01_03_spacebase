@@ -274,10 +274,8 @@
 						right = true;
 						yoffset++;
 					}
-				} else {
-					xoffset = 0;
-					yoffset = 0;
-					pause = true;
+				} else {									//if Invader touch the bottom border, game over
+				endOfGame++;
 				}
 			}
 			/* randomly let random invaders shoot at every 50th render or let them explode randomly if game over */
