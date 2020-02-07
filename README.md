@@ -45,4 +45,26 @@ Das Spiel lässt sich von GitHub direkt herunterladen. Durch das Öffnen der Dat
 ### Zentrale Funktionen:
 `renderBullets():` Eine Funktion, die jeden Invader durchgeht und jede Bullet durchgeht und ausrechnet, wie der Abstand zwischen Invader und Bullet ist. Falls dieser kleiner ist als der Invaderdurchmesser explodiert der Invader, die Bullet wird gelöscht und der Shotcount (Scoreboard) wird hochgezählt. Falls die Bullets den Rand erreichen werden sie auch gelöscht, damit sie nicht ins Unendliche fliegen.  
 `renderLasers():` Geht jeden Invader beziehungsweise deren Laser durch und berechnet den Abstand zwischen Laser und Spaceship. Falls dieses getroffen wird, wird das Spaceship und der Laser entfernt, das Spiel beschleunigt und das Spielende wird eingeleitet. Wenn der Laser den Rand erreicht, wird er gelöscht.  
-`renderInvaders():` Das Spiel wird alle 40 ms gerendert. Alle 25 mal bewegt die Funktion die Invader um einen definierten Step weiter. Wenn die Invader den Rand erreichen werden sie eine Zeile weiter nach unten bewegt und ändern die Richtung. Wenn sie den unteren Rand erreichen, verliert der Spieler.
+`renderInvaders():` Das Spiel wird alle 40 ms gerendert. Alle 25 mal bewegt die Funktion die Invader um einen definierten Step weiter. Wenn die Invader den Rand erreichen werden sie eine Zeile weiter nach unten bewegt und ändern die Richtung. Wenn sie den unteren Rand erreichen, verliert der Spieler. Alle 50 mal schießt ein zufälliger Invader. Sollte das Spiel vorbei sein explodiert ein Invader stattdessen. Außerdem werden am Ende der Funktion alle InvaderRows angezeigt.  
+`render():` Die Renderfunktion ruft alle Renderfunktionen der einzelnen Komponenten auf, schaut ob der Spieler bereits gewonnen hat und aktualisiert das Scoreboard.  
+`checkPlayerWon():` Die Funktion geht alle Invader durch und überprüft ob noch ein unexplodierter Invader existiert. Ist dies der Fall, hat der Spieler noch nicht gewonnen. Sollten alle Invader explodiert sein, gibt Sie dies zurück.  
+`playerWon () & playerLost ():` Erstellen große Texte auf dem Display, sollte der Spieler gewonnen oder verloren haben (GAME OVER / YOU WON).  
+`printInvaderRow ():` Die Funktion ruft alle gespeicherten InvaderRows und deren Invader ab und zeigt diese an ihrer jeweiligen Position mit der Verschiebung auf beiden Achsen an. Sollte der Invader getroffen werden, zeigt diese für einen kurzen Zeitpunkt eine Explosionsanimation an.  
+`shootlaser():` Erzeugt ein Objekt der Klasse Laser, sobald diese in einem Invader aufgerufen wird.  
+`explode():` Lässt den Invadern explodieren indem das Aussehen und der explodeState des Invaders verändert wird.
+`generateInvader():` Erzeugt einen Invader durch die angegebene Zufallszahl.
+`generateInvaderRow():` Erzeugt mehrere Invader und speichert diese in einer Reihe.
+## Beschreibung des Spielablaufs
+Das Spiel startet damit, das 2 Reihen Invader oben links erstellt werden. Das Spaceship startet Zentral am unteren Rand und kann sich nur auf der X-Achse bewegen. Die Invader bewegen sich nun lanksam von links nach rechts, bis sie den rechten Rand erreicht haben. Dann springen sie eine Reihe weiter nach unten und bewegen sich nach links bis sie wieder am linken Rand angekommen sind. Dort springen sie wieder eine Reihe weiter nach unten. Dieses Prozedere wiederholt sich, bis die Invader am unteren Rand angekommen sind. Ist das der Fall, verliert der Spieler. Während dieses Ablaufes schießt immer ein zufälliger Invader Richtung Spaceship. Der Spieler muss versuchen, den Kugeln auszuweichen und gleichzeitig alle Invader ab zu schießen, ohne selbst getroffen zu werden oder die Invader an den unteren Rand kommen zu lassen.
+## ToDos
+Wenn mehr Zeit in die Entwicklung des Spiels investiert wird, wird:  
+* Ein Hinderniss eingeführt, welches durch mehrere Treffer zerstört wird und als Schutz dienen kann
+* Mehr InvaderRows hinzugefügt, die nach und nach erscheinen -> "Endlosmodus"
+* Verschiedene Schwierigkeitsgrade eingebaut
+* Das jeder Invader bis zum Rand laufen kann, wenn zwischen ihm und Rand kein weiterer Invader mehr existiert
+* Sounds hinzugefügt
+* Ein "Boss-Invader" hinzugefügt, welcher ab und zu auftaucht und extra Punkte gibt
+* Der "2-Player-Mode" weiter ausgebaut
+* Ein Ranking im Scoreboard, um Highscores zu vergleichen
+* Items, die die Eigenschaften des Spaceships kurzweilig verändern (positiv und negativ)
+
