@@ -1,7 +1,7 @@
 # SPACE INVADERS
 In Verbindung der Fächer Programmiersprachen 1 und Datenbanken sollten wir ein "Space Invader" ähnliches Spiel programmieren. Dafür gab uns unser Dozent (Florian Geiselhart) eine Datei als Vorlage mit groben Anleitungen. Darin sollten wir dann unser Spiel aufbauen. Die Vorlage enthielt schon Code, welcher die Grundstuktur des Spiels beschrieb. Unsere Aufgabe war es dann, die Invader darstellen, sie wandern lassen, schießen lassen und treffbar machen. Desweiteren sollte eine Variable die Treffer hoch zählen.  
 ## How to use:
-Das Spiel lässt sich von GitHub direkt herunterladen. Durch das Öffnen der Datei "index.js" startet sich der jeweils als  Standartbrowser festgelegte Browser und das Spiel startet direkt.
+Das Spiel lässt sich von GitHub direkt herunterladen. Durch das Öffnen der Datei "index.html" startet sich der jeweils als  Standartbrowser festgelegte Browser und das Spiel startet direkt.
 ### Steurung Spaceship
 **Pfeiltaste rechts:** nach rechts fliegen  
 **Pfeiltaste links:** nach links fliegen  
