@@ -1,0 +1,24 @@
+/* css description for "newgame/restart" button */
+
+.newgame {
+  font-size: 30px;
+  border-radius: 8px;
+  background-color: green;
+  color: white;
+  border: 2px solid white;
+  float: left;
+  text-align: center;
+  box-shadow: 0 9px #999;
+  position: absolute;
+  top: 50vh;
+  left: 50px;
+  width: 6ch;
+}
+.newgame:hover {
+  background-color: gray;
+}
+.newgame:active {
+  background-color: black;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
