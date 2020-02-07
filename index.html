@@ -331,17 +331,7 @@
 						gameWon();
 					}
 				}
-				function checkGameWon() {
-					for (let r = 0; r < invaderRows.length; r++) {
-					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
- 					const invader = invaderRows[r].invaders[i];
- 					if (invader.explodeState == 0) {
- 						return false;
- 					}
- 				}
- 			}
- 			return true;
- 		}
+				
 				}
 
 				//Render Laser
@@ -352,28 +342,38 @@
 				document.getElementById("SCOREBOARD").innerText = "Scoreboard \n" + invaderShotCount; //Scoreboard counts killed invaders
 
 			}
+			function checkGameWon() {
+					for (let r = 0; r < invaderRows.length; r++) {
+					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+ 					const invader = invaderRows[r].invaders[i];
+ 					if (invader.explodeState == 0) {
+ 						return false;
+ 					}
+ 				}
+ 			}
+ 			return true;
+ 		}
 		function gameLost() {
-			textOffsetX = 0;
-			//textOffsetX = (cols / 2) - (75 / 2);
-			//textOffsetY = (rows / 2) - (7 / 2);
-			textOffsetY = 0;
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 1)," ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ ");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 2),"██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 3),"██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 4),"██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 5),"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 6),"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 7)," ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝");
+
+			textOffsetX = (cols / 2) - (76 / 2);
+			textOffsetY = (rows / 2) - (8 / 2);
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 1, cols)," ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ ");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 2, cols),"██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 3, cols),"██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 4, cols),"██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 5, cols),"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 6, cols),"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 7, cols)," ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝");
 		}
 		function gameWon() {
 			textOffsetX = (cols / 2 ) - (64 / 2);
 			textOffsetY = (cols / 2 ) - (6 / 2);
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 1), "██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗ ██╗");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 2), "╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██╔═══██╗████╗  ██║ ██║");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 3), " ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║   ██║██╔██╗ ██║ ██║");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 4), "  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║   ██║██║╚██╗██║ ╚═╝");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 5), "   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║ ╚████║ ██╗");
-			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 6), "   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═══╝ ╚═╝");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 1, cols), "██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗ ██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 2, cols), "╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██╔═══██╗████╗  ██║ ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 3, cols), " ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║   ██║██╔██╗ ██║ ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 4, cols), "  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║   ██║██║╚██╗██║ ╚═╝");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 5, cols), "   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║ ╚████║ ██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 6, cols), "   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═══╝ ╚═╝");
 		}
 		/* function that creates invader randomly and displays them with "█", if invader gets hitted displays circle of "*" */
 		function printInvaderRow(invaderRow) {
