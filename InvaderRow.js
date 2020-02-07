@@ -1,3 +1,5 @@
+/* createt a class for the invaders and put them directly into a row */
+
 // eslint-disable-next-line no-unused-vars
 class invaderRow {
   constructor(posX, posY, cols, invaderCount, id, invWidth, invHeight, rand) {

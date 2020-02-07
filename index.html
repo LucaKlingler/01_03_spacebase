@@ -5,6 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>SPACE INVADERS</title>
+	<!--related css files of buttons and scoreboard to index.js-->
 	<link rel="stylesheet" href="restart.css">
 	<link rel="stylesheet" href="pause.css">
 	<link rel="stylesheet" href="scoreboard.css">
@@ -26,13 +27,14 @@
 </head>
 
 <body>
-	<button class="newgame" onclick="location.reload()">Restart</button>
-	<button class="pause" onclick="pause = !pause">Pause</button>
-	<p class="scoreboard" id="SCOREBOARD">SCOREBOARD<br></p>
+	<button class="newgame" onclick="location.reload()">Restart</button> <!-- added button to restart the game -->
+	<button class="pause" onclick="pause = !pause">Pause</button> <!-- added button to pause the game-->
+	<p class="scoreboard" id="SCOREBOARD">SCOREBOARD<br></p> <!-- added scoreboard to the game-->
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
 	</pre>
-	<script src="Laser.js"></script>
+	<!-- linked classes for Laser, invader, invaderrow and bullet-->
+	<script src="Laser.js"></script> 
 	<script src="invader_class.js"></script>
 	<script src="InvaderRow.js"></script>
 	<script src="bullet.js"></script>
@@ -68,7 +70,6 @@
 		function newGame() {
 			//TODO Punktestände
 			//TODO Invaders erzeugen und in Array (invaders) schreiben damit sie gerendet werden können
-			//invaders.push(new Invader(5, 5, 10, 10, invId++));
 			invaderRows.push(new invaderRow(0, 2, cols, 5, 1, 5, 5, Math.random()));
 			invaderRows.push(new invaderRow(0, 10, cols, 5, 1, 5, 5, Math.random()));
 
@@ -83,7 +84,7 @@
 		}
 
 		function fireBullet() {
-			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4, bulletId++));
+			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4, bulletId++)); 
 		}
 
 		function setCharsAt(str, index, chr) {
@@ -118,12 +119,12 @@
 				fireBullet();
 			} else if (keyCode === 69) {
 				for (let i = 0; i < invaders.length; i++) {
-					invaders[i].explode();
+					invaders[i].explode(); //letting invaders explode when hit
 				}
 			} else if (keyCode === 80) {
-				pause = !pause;
+				pause = !pause; // added extra pause button "p"
 			} else if (keyCode === 76) {
-				invaderRows[1].invaders[2].shootLaser();
+				invaderRows[1].invaders[2].shootLaser(); // added button to let invaders shoot also ("L"), "2 player mode" possible
 			}
 		}, false);
 
@@ -175,19 +176,16 @@
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
 						const inv = invaderRows[r].invaders[i];
 						const bullet = currentBullets[b];
-						// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
-						// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
 						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.posX), 2) + Math.pow((inv.posY +
 							yoffset + inv.height / 2 - bullet
 							.posY), 2));
-						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
 
-						if (dist < inv.width / 2) {
-							inv.explode();
-							if (inv.explodeState <= 1) {
-								bullet.posY = 0;
-								invaderShotCount += 1;
-							}
+							if (dist < inv.width / 2) {
+								if (inv.explodeState < 1) {
+									bullet.posY = 0;
+									invaderShotCount += 1;
+								}
+								inv.explode();
 						}
 					}
 
@@ -204,7 +202,7 @@
 		}
 		let fun = false
 
-		function renderLasers() {
+		function renderLasers() { // function to let the invader shoot
 
 			for (let r = 0; r < invaderRows.length; r++) {
 				for (let i = 0; i < invaderRows[r].invaders.length; i++) {
@@ -213,10 +211,10 @@
 
 
 						const dist = Math.sqrt(Math.pow((laser.posX + xoffset - (spaceshipPos + 3)), 2) + Math.pow((laser
-							.posY + yoffset - (rows - 2)), 2));
+							.posY + yoffset - (rows - 2)), 2)); //measure distance between laser and spaceship so spaceship can get hit
 
 						if (dist < 3) {
-							if (endOfGame < 1) {
+							if (endOfGame < 1) { //if spaceship is hit -> end of game
 								endOfGame += 1;
 								speed = 5;
 								spaceship = [];
@@ -247,7 +245,7 @@
 				run2 += 1;
 				if (endOfGame < 1) {
 					if (right) {
-						xoffset += xoffsetSteps;
+						xoffset += xoffsetSteps; //letting invader walk right and left 
 					} else {
 						xoffset -= xoffsetSteps;
 					}
@@ -257,15 +255,15 @@
 
 				for (let r = 0; r < invaderRows.length; r++) {
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-						const invader = invaderRows[r].invaders[i];
+						const invader = invaderRows[r].invaders[i]; // checking every inaverrow and every invader 
 
-						if (invader.explodeState > 0) {
+						if (invader.explodeState > 0) { //counting them up to handle the explosion animation
 							invader.explodeState += 1;
 						}
 					}
 				}
-
-				const invader = invaderRows[0].invaders[0];
+				/* checking if invaderrow hits the borders, if yes change direction and put them one row down*/ 
+				const invader = invaderRows[0].invaders[0]; 
 				let xLimit = cols - invaderRows[0].rowWidth;
 				let yLimit = rows - invader.appearance[0].length - 10;
 				if (invader.posY + yoffset <= yLimit) {
@@ -282,7 +280,7 @@
 					pause = true;
 				}
 			}
-			
+			/* randomly let random invaders shoot at every 50th render or let them explode randomly if game over */
 			if (run2 == 2) {
 				run2 = 0;
 				randRow = Math.floor(Math.random() * invaderRows.length);
@@ -300,7 +298,7 @@
 				}
 			}
 
-
+			/* printing invaderrows*/
 			for (let i = 0; i < invaderRows.length; i++) {
 				printInvaderRow(invaderRows[i]);
 			}
@@ -316,6 +314,8 @@
 				if (endOfGame < 5) {
 					//Render Obstacle
 					renderObstacles();
+				}else{
+					gameLost();
 				}
 
 				//Render Spaceship
@@ -326,16 +326,56 @@
 
 				//Render Bullets
 				renderBullets(renderStr);
+				if (checkGameWon()) {
+					if (endOfGame == 0) {
+						gameWon();
+					}
+				}
+				function checkGameWon() {
+					for (let r = 0; r < invaderRows.length; r++) {
+					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+ 					const invader = invaderRows[r].invaders[i];
+ 					if (invader.explodeState == 0) {
+ 						return false;
+ 					}
+ 				}
+ 			}
+ 			return true;
+ 		}
+				}
 
 				//Render Laser
 				renderLasers(renderStr);
 
 				//Gesamtergebnis anzeigen
 				document.getElementById("console").innerText = renderStr;
-				document.getElementById("SCOREBOARD").innerText = "Scoreboard \n" + invaderShotCount;
+				document.getElementById("SCOREBOARD").innerText = "Scoreboard \n" + invaderShotCount; //Scoreboard counts killed invaders
 
 			}
+		function gameWon() {
+			textOffsetX = 0;
+			//textOffsetX = (cols / 2) - (75 / 2);
+			//textOffsetY = (rows / 2) - (7 / 2);
+			textOffsetY = 0;
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 1)," ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ ");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 2),"██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 3),"██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 4),"██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 5),"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 6),"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 7)," ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝");
 		}
+		function gameLost() {
+			textOffsetX = (cols / 2 ) - (64 / 2);
+			textOffsetY = (cols / 2 ) - (6 / 2);
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 1), "██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗ ██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 2), "╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██╔═══██╗████╗  ██║ ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 3), " ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║   ██║██╔██╗ ██║ ██║");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 4), "  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║   ██║██║╚██╗██║ ╚═╝");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 5), "   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║ ╚████║ ██╗");
+			renderStr = setCharsAt(renderStr, xyToStringPos(textOffsetX, textOffsetY + 6), "   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═══╝ ╚═╝");
+		}
+		/* function that creates invader randomly and displays them with "█", if invader gets hitted displays circle of "*" */
 		function printInvaderRow(invaderRow) {
 			for (let i = 0; i < invaderRow.invaders.length; i++) {
 				for (let x = 0; x < invaderRow.invaders[i].appearance.length; x++) {

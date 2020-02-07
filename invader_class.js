@@ -1,3 +1,6 @@
+/* created new class to achieve a cleaner  workflow and code,
+added everything that this class had to have  */
+
 // eslint-disable-next-line no-unused-vars
 class Invader {
   constructor(width, height, posX, posY, id, rand = Math.random()) {
